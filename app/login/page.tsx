@@ -6,7 +6,6 @@ import Form from './Form'
 
 export default async function Login() {
   const session = await getServerSession(authOptions);
-  console.log(session)
 
   if (session) redirect("/");
 

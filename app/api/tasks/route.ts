@@ -17,7 +17,7 @@ export async function GET(request: NextRequest, response: NextResponse) {
       });
     }
     // GET TASKS FROM DB
-    const tasks = []
+    const tasks: unknown = [];
 
     return NextResponse.json({
       error: false,
@@ -37,11 +37,12 @@ export async function GET(request: NextRequest, response: NextResponse) {
 export async function POST(request: NextRequest, response: NextResponse) {
   try {
     const res = await request.json();
-    await connectDB();
-    const session = await getServerSession(authOptions);
+    const session = await getServerSession();
+    
     const user = session?.user;
 
     if (!session || !user) {
+      console.log('unauthenticated')
       return NextResponse.json({
         error: true,
         status: 404,
@@ -49,8 +50,11 @@ export async function POST(request: NextRequest, response: NextResponse) {
       });
     }
 
+    // SET CUSTOM FIELDS ON SESSION
+    session.custom = 6
     // CREATE TASK
-   const task = {}
+    const task = {};
+    console.log({ss: session})
 
     return NextResponse.json({
       error: false,
